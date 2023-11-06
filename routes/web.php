@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use function PHPUnit\Framework\fileExists;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('posts', [
+        'posts' => Post::all()
+    ]);
 });
+
+Route::get('/post/{post}', function ($id) {
+    return view('post', [
+        'post' => Post::findOrFail($id)
+    ]);
+});
+
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/store', [UserController::class, 'store']);
